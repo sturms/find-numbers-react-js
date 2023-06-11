@@ -1,0 +1,30 @@
+.taskPanelContainer {
+    position:relative;
+    margin:auto;
+    width:700px;
+    height: auto;
+    border: 1px solid black;
+
+    .title {
+        padding: 5px 0 5px 0;
+    }
+
+    .status {
+        padding-left: 5px;
+    }
+
+    input.buttons {
+        width: 50px;
+
+        &.stop {
+            margin-left: 5px;
+        }
+    }
+    
+    input.buttons:hover {
+        color: blue;
+    }
+    input.buttons:disabled{
+        color:gray;
+    }
+}
