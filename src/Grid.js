@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import GridRow from './GridRow';
 import './styles/grid.scss'
 
@@ -6,24 +7,50 @@ import './styles/grid.scss'
  * @param {*} props 
  * @returns 
  */
-function Grid(props) {
-    const task = props.task;
+function Grid({task, setTask}) {
+    const [gridContent, setGridContent] = useState((<div>Task is not started</div>));
     const gridSize = task.gridSize;
     const gridType = task.gridType;
-    const maxNumber = getEvenNumber(Math.pow(gridSize, 2));
 
-    // Generate all of the numbers till max number
-    let generatedNumbers = generateNumbers(maxNumber, gridType === 2);
+    useEffect(() => {
+        if (!task.pageLoaded) {
+            setTask({...task, pageLoaded: true});
+            return;
+        }
 
-    // Shuffle the order/position of each number in the array
-    generatedNumbers = shuffle(generatedNumbers);
-
-    // Return a new array where each item represents a grid cell and is an object
-    const gridItems = storeGridItemsAsObjects(gridSize, maxNumber, generatedNumbers);
+        if (task.taskStarted) {            
+            let maxNumber = getEvenNumber(Math.pow(gridSize, 2));
+            let gridItems = generateGridItems(gridSize, gridType, maxNumber);
+            setGridContent(generateHtml(gridSize, gridItems));
+        }
+        else {
+            setGridContent((<div>Task ended</div>));
+        }
+        
+    },[task.taskStarted]);
 
     return (
-        <div className="container gridContainer">{generateHtml(gridSize, gridItems)}</div>
+        <div className="container gridContainer">{gridContent}</div>
         );
+}
+
+/**
+ * Return a new array where each item represents a grid cell and is an object.
+ * @param {*} gridSize 
+ * @param {*} gridType 
+ * @param {*} maxNumber 
+ * @returns 
+ */
+function generateGridItems(gridSize, gridType, maxNumber) {
+     // Generate all of the numbers till max number
+     let generatedNumbers = generateNumbers(maxNumber, gridType === 2);
+
+     // Shuffle the order/position of each number in the array
+     generatedNumbers = shuffle(generatedNumbers);
+ 
+     // Return a new array where each item represents a grid cell and is an object
+     const gridItems = storeGridItemsAsObjects(gridSize, maxNumber, generatedNumbers);
+     return gridItems;
 }
 
 /**

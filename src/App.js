@@ -1,4 +1,4 @@
-import { memo } from "react";
+import { useState, useEffect } from "react";
 import Grid from "./Grid";
 import TaskPanel from "./TaskPanel";
 
@@ -8,6 +8,7 @@ class Task {
         this.misclicks = 0;
         this.gridType = 0;
         this.taskStarted = false;
+        this.pageLoaded = false;
         this.gridSize = 7;
         this.title = "Uzmanības trennēšanas tests, atrodi skaitļus cik ātri vari!";
         this.description = "";
@@ -42,12 +43,13 @@ function App() {
         new FindNumbersTask(), 
         new FindBoldNumbersTask()
     ];
-    const selectedTask = tasks[1];
+    const task = tasks[1];
+    const [selectedTask, setTask] = useState(task);
 
     return <>
-        <TaskPanel task={selectedTask} />
-        <Grid task={selectedTask} />
+        <TaskPanel task={selectedTask} setTask={setTask} />
+        <Grid task={selectedTask} setTask={setTask} />
     </>;
 }
 
-export default memo(App);
+export default App;

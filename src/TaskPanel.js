@@ -1,12 +1,10 @@
 import './styles/taskPanel.scss'
 import { useState, memo } from "react";
 
-function TaskPanel(props) {
-    const [task, setTask] = useState(props.task);
+function TaskPanel({task, setTask}) {
+
     const start = () => {
         setTask({...task, taskStarted: true});
-        // TODO: generate grid
-        // TODO: show grid
         // TODO: reset/start timer
     }
 
@@ -28,16 +26,18 @@ function TaskPanel(props) {
                     <div className='col-sm status'>Misclicks: {task.misclicks}</div>
                     <div className='col-sm status'>
                         <input
+                            key='startBtn'
                             className='buttons'
                             type='button' 
                             disabled={task.taskStarted}
-                            onClick={() => start()}
+                            onClick={start}
                             value='start' />
-                        <input 
+                        <input
+                            key='stopBtn'
                             className='buttons stop'
                             type='button'
                             disabled={!task.taskStarted}
-                            onClick={() => stop()}
+                            onClick={stop}
                             value='stop' />
                     </div>
                 </div>
