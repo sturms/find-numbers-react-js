@@ -38,6 +38,12 @@ class FindBoldNumbersTask extends Task {
     }
 }
 
+class GridStatus {
+    constructor() {
+        this.prevOrderNumber = 0;
+    }
+}
+
 function App() {
     const tasks = [
         new FindNumbersTask(), 
@@ -45,10 +51,11 @@ function App() {
     ];
     const task = tasks[1];
     const [selectedTask, setTask] = useState(task);
+    const [gridStatus, setGridStatus] = useState(new GridStatus());
 
     return <>
         <TaskPanel task={selectedTask} setTask={setTask} />
-        <Grid task={selectedTask} setTask={setTask} />
+        <Grid task={selectedTask} setTask={setTask} gridStatus={gridStatus} setGridStatus={setGridStatus} />
     </>;
 }
 

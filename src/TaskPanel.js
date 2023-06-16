@@ -3,14 +3,24 @@ import { useState, memo } from "react";
 
 function TaskPanel({task, setTask}) {
 
-    const start = () => {
-        setTask({...task, taskStarted: true});
-        // TODO: reset/start timer
+    const start = () => {        
+        setTask(prevTaskStatus => {
+            return { ...prevTaskStatus, taskStarted: true, timeSpent: 0 }
+        });
+        
+        window.refreshIntervalId = setInterval(() => {
+            setTask(previousState => {
+                return { ...previousState, timeSpent: previousState.timeSpent + 1 }
+            });
+        }, 1000);
     }
 
     const stop = () => {
-        setTask({...task, taskStarted: false});
-        // TODO: stop timer
+        setTask(prevTaskStatus => {
+            return {...prevTaskStatus, taskStarted: false}
+        });
+
+        clearInterval(window.refreshIntervalId);
     }
 
     return <>

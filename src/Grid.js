@@ -7,21 +7,42 @@ import './styles/grid.scss'
  * @param {*} props 
  * @returns 
  */
-function Grid({task, setTask}) {
+function Grid({task, setTask, gridStatus, setGridStatus}) {
     const [gridContent, setGridContent] = useState((<div>Task is not started</div>));
+    const gridProps = {
+        prevOrderNumber: 0,
+        misclicks: 0
+    };
     const gridSize = task.gridSize;
     const gridType = task.gridType;
 
     useEffect(() => {
         if (!task.pageLoaded) {
-            setTask({...task, pageLoaded: true});
+            setTask(prevTaskState => {
+                return {...prevTaskState, pageLoaded: true }
+            });
             return;
         }
 
         if (task.taskStarted) {            
             let maxNumber = getEvenNumber(Math.pow(gridSize, 2));
             let gridItems = generateGridItems(gridSize, gridType, maxNumber);
-            setGridContent(generateHtml(gridSize, gridItems));
+            const rowsHtml = [];
+
+            for (let i = 0; i < gridSize; i++) {
+                let rowKey = i + '_row';
+                rowsHtml.push(<GridRow 
+                        key={rowKey}
+                        task={task}
+                        setTask={setTask}
+                        gridStatus={gridStatus}
+                        setGridStatus={setGridStatus}
+                        gridProps={gridProps}
+                        rowCells={gridItems.filter((item) => { return item.row === i; })}
+                        />);
+            }
+
+            setGridContent(rowsHtml);
         }
         else {
             setGridContent((<div>Task ended</div>));
@@ -43,7 +64,7 @@ function Grid({task, setTask}) {
  */
 function generateGridItems(gridSize, gridType, maxNumber) {
      // Generate all of the numbers till max number
-     let generatedNumbers = generateNumbers(maxNumber, gridType === 2);
+     let generatedNumbers = generateNumbers(maxNumber, gridType);
 
      // Shuffle the order/position of each number in the array
      generatedNumbers = shuffle(generatedNumbers);
@@ -69,37 +90,31 @@ function storeGridItemsAsObjects(gridSize, maxNumber, generatedNumbers) {
         }
         
         let item = generatedNumbers[i];
+        
         let gridItem = {
             id: i,
             col: c,
             row: r,
             value: item.value,
-            boldFont: item.type === 2,
+            orderNumber: item.orderNumber,
+            boldFont: item.priority === 1,
             clicked: false,
             color: 'black'
         };
+        console.log({ value: gridItem.value, order: gridItem.orderNumber, bold: gridItem.boldFont});
 
         gridItems.push(gridItem);
     }
     return gridItems;
 }
 
-/**
- * 
- * @param {*} gridSize 
- * @param {*} gridItems 
- * @returns 
- */
-function generateHtml(gridSize, gridItems) {
-    const rowsHtml = [];
-    for (let i = 0; i < gridSize; i++) {
-        let rowKey = i + '_row';
-        rowsHtml.push(<GridRow 
-                key={rowKey} 
-                cells={gridItems.filter((item) => { return item.row === i; })}
-                />);
+class GridNumber {
+    constructor(value, type, priority, orderNumber) {
+        this.value = value;
+        this.type = type;
+        this.priority = priority;
+        this.orderNumber = orderNumber;
     }
-    return rowsHtml;
 }
 
 /**
@@ -108,15 +123,19 @@ function generateHtml(gridSize, gridItems) {
  * @param {*} createDuplicates 
  * @returns 
  */
-function generateNumbers(evenMaxNumber, createDuplicates) {
+function generateNumbers(evenMaxNumber, gridType) {
     let resultArray = [];
+    let createDuplicates = gridType === 2;
     let maxNumber = createDuplicates ? evenMaxNumber / 2 : evenMaxNumber;
+    let orderNumber = 1;
 
-    for (let i = 1; i <= maxNumber; i++) {
-        resultArray.push({ value: i, type: 1 });
+    for (let value = 1; value <= maxNumber; value++) {
         if (createDuplicates) {
-            resultArray.push({ value: i, type: 2 });
+            resultArray.push(new GridNumber (value, gridType, 1, orderNumber));
+            orderNumber++;
         }
+        resultArray.push(new GridNumber (value, gridType, 2, orderNumber));
+        orderNumber++;
     }
     return resultArray;
 }
