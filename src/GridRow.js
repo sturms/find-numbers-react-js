@@ -2,11 +2,11 @@ import { useState, memo } from "react";
 import classNames from 'classnames';
 import './styles/grid.scss'
 
-function GridRow({rowCells, task, setTask, gridStatus, setGridStatus, gridProps}) {
+function GridRow({rowCells, task, setTask, gridProps}) {
     const [cells, setCell] = useState(rowCells);
 
     const mark = (cell) => {
-        let isClickAllowed = isClickedItemCorrect(task, cell.orderNumber, gridProps.prevOrderNumber);
+        let isClickAllowed = isClickedItemCorrect(cell.orderNumber, gridProps.prevOrderNumber);
         if (!cell.clicked && isClickAllowed) {
             setCell(cells.map(item => {
                 return item.id === cell.id
@@ -14,16 +14,26 @@ function GridRow({rowCells, task, setTask, gridStatus, setGridStatus, gridProps}
                     : item;
             }));
 
-            gridProps.prevOrderNumber++;
-            setGridStatus(prevGridStatus => {
-                return { ...prevGridStatus, prevOrderNumber: gridProps.prevOrderNumber };
-            });
+            let gridSize = (Math.pow(task.gridSize, 2));
+            if (cell.orderNumber === gridSize - 1) {
+                gridProps.taskCompleted = true;
+                setTask(prevTaskStatus => {
+                    return { 
+                        ...prevTaskStatus,
+                        taskCompleted: true,
+                        startBtnClicked: false
+                    };
+                });
+            }
 
+            gridProps.prevOrderNumber++;
         } else {
-            gridProps.misclicks++;
-            setTask(prevTaskStatus => {
-                return {  ...prevTaskStatus, misclicks: gridProps.misclicks };
-            });
+            if (!gridProps.taskCompleted){
+                gridProps.misclicks++;
+                setTask(prevTaskStatus => {
+                    return {  ...prevTaskStatus, misclicks: gridProps.misclicks };
+                });
+            }
         }
     }
     
@@ -45,7 +55,7 @@ function GridRow({rowCells, task, setTask, gridStatus, setGridStatus, gridProps}
     );
 }
 
-function isClickedItemCorrect(task, orderNumber, prevOrderNumber) {
+function isClickedItemCorrect(orderNumber, prevOrderNumber) {
     return prevOrderNumber === orderNumber -1;
 }
 

@@ -1,11 +1,18 @@
 import './styles/taskPanel.scss'
-import { useState, memo } from "react";
+import { useEffect } from "react";
 
 function TaskPanel({task, setTask}) {
 
     const start = () => {        
         setTask(prevTaskStatus => {
-            return { ...prevTaskStatus, taskStarted: true, timeSpent: 0 }
+            return { 
+                ...prevTaskStatus, 
+                taskStarted: true,
+                startBtnClicked: true,
+                timeSpent: 0,
+                misclicks: 0,
+                taskCompleted: false 
+            }
         });
         
         window.refreshIntervalId = setInterval(() => {
@@ -17,11 +24,19 @@ function TaskPanel({task, setTask}) {
 
     const stop = () => {
         setTask(prevTaskStatus => {
-            return {...prevTaskStatus, taskStarted: false}
+            return { ...prevTaskStatus, taskStarted: false }
         });
 
         clearInterval(window.refreshIntervalId);
     }
+
+    useEffect(() => {
+        // Check whether change event was not initiated by start button click
+        if (!task.startBtnClicked) {
+            stop();
+        }
+        
+    }, [task.taskCompleted]);
 
     return <>
         <div className='taskPanelContainer'>
@@ -37,14 +52,14 @@ function TaskPanel({task, setTask}) {
                     <div className='col-sm status'>
                         <input
                             key='startBtn'
-                            className='buttons'
+                            className='buttons btn btn-primary btn-lg btn-block'
                             type='button' 
                             disabled={task.taskStarted}
                             onClick={start}
                             value='start' />
                         <input
                             key='stopBtn'
-                            className='buttons stop'
+                            className='buttons stop btn btn-primary btn-lg btn-block'
                             type='button'
                             disabled={!task.taskStarted}
                             onClick={stop}
@@ -52,6 +67,7 @@ function TaskPanel({task, setTask}) {
                     </div>
                 </div>
                 <div className='col-md-8'>
+                    <p><u>{task.assignmentName}:</u></p>
                     <p>{task.description}</p>
                 </div>
             </div>

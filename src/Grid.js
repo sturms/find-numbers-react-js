@@ -2,20 +2,26 @@ import { useState, useEffect } from "react";
 import GridRow from './GridRow';
 import './styles/grid.scss'
 
+class GridProps {
+    constructor() {
+        this.prevOrderNumber = 0;
+        this.misclicks = 0;
+        this.maxNumber = 0;
+        this.taskCompleted = false;
+    }
+}
+
 /**
  * 
  * @param {*} props 
  * @returns 
  */
-function Grid({task, setTask, gridStatus, setGridStatus}) {
-    const [gridContent, setGridContent] = useState((<div>Task is not started</div>));
-    const gridProps = {
-        prevOrderNumber: 0,
-        misclicks: 0
-    };
+function Grid({task, setTask}) {
+    const [gridContent, setGridContent] = useState([]);
     const gridSize = task.gridSize;
     const gridType = task.gridType;
-
+    const gridProps = new GridProps();
+    
     useEffect(() => {
         if (!task.pageLoaded) {
             setTask(prevTaskState => {
@@ -24,28 +30,22 @@ function Grid({task, setTask, gridStatus, setGridStatus}) {
             return;
         }
 
-        if (task.taskStarted) {            
-            let maxNumber = getEvenNumber(Math.pow(gridSize, 2));
-            let gridItems = generateGridItems(gridSize, gridType, maxNumber);
-            const rowsHtml = [];
-
+        if (task.taskStarted) {    
+            gridProps.maxNumber = getEvenNumber(Math.pow(gridSize, 2));
+            const gridItems = generateGridItems(gridSize, gridType, gridProps.maxNumber);
+            let rowsHtml = [];
             for (let i = 0; i < gridSize; i++) {
-                let rowKey = i + '_row';
-                rowsHtml.push(<GridRow 
+                let rowKey = i + '_row' + new Date().getMilliseconds();
+                rowsHtml.push((<GridRow 
                         key={rowKey}
                         task={task}
                         setTask={setTask}
-                        gridStatus={gridStatus}
-                        setGridStatus={setGridStatus}
                         gridProps={gridProps}
                         rowCells={gridItems.filter((item) => { return item.row === i; })}
-                        />);
+                        />));
             }
 
             setGridContent(rowsHtml);
-        }
-        else {
-            setGridContent((<div>Task ended</div>));
         }
         
     },[task.taskStarted]);
@@ -90,7 +90,6 @@ function storeGridItemsAsObjects(gridSize, maxNumber, generatedNumbers) {
         }
         
         let item = generatedNumbers[i];
-        
         let gridItem = {
             id: i,
             col: c,
@@ -101,7 +100,6 @@ function storeGridItemsAsObjects(gridSize, maxNumber, generatedNumbers) {
             clicked: false,
             color: 'black'
         };
-        console.log({ value: gridItem.value, order: gridItem.orderNumber, bold: gridItem.boldFont});
 
         gridItems.push(gridItem);
     }

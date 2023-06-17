@@ -1,0 +1,65 @@
+
+.endResultContainer {
+    position:relative;
+    margin:auto;
+    width:700px;
+    height: auto;
+
+    .resultTitle {        
+        h1 {
+            display:none;
+            font-size: 18px;
+            text-align: center;
+            margin-bottom: 0px;
+        }
+        
+        .good, .average, .bad {
+            display: block;
+        }
+
+        .good {
+            color: green;
+            background-color: yellow;
+        }
+
+        .average {
+            color: orange;
+            background-color: lightgray;
+        }
+        
+        .bad {
+            color: red;
+            background-color: black;
+        }
+    }
+
+    .resultExplanation {
+        
+        div {
+            color: black;
+            font-size: 16px;
+            display: none;
+            padding:10px;
+        }
+
+        .good, .average, .bad {
+            display: block;
+            background-color:wheat;
+        }
+
+        .good {
+            color: darkgreen;
+            border: 1px solid green;
+        }
+
+        .average {
+            color:brown;
+            border: 1px solid orange;
+        }
+        
+        .bad {
+            color: darkred;
+            border: 1px solid red;
+        }
+    }
+}
