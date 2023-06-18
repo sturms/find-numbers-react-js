@@ -1,7 +1,6 @@
 body {
     background-image: url('~/src/dist/img/bg.jpg');
 }
-
 .showOverlay {
     position: fixed; 
     display: block;
@@ -14,4 +13,4 @@ body {
     background-color: rgba(0,0,0,0.4);
     z-index: 2; 
     cursor: pointer;
-  }
+}

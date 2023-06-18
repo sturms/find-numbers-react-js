@@ -62,6 +62,7 @@ function App() {
 
     useEffect(() => {
         setTask(tasks[selectedTaskId -1]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selectedTaskId]);
 
     return <div className={classNames({showOverlay: currentTask.taskStarted})}>

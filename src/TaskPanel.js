@@ -35,7 +35,8 @@ function TaskPanel({task, setTask, selectedTaskId, setSelectedTaskId, allTasks})
     useEffect(() => {
         if (!task.startBtnClicked) {
             stop();
-        } 
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [task.taskCompleted]);
 
     const handleTaskChange = (event) => {

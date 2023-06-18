@@ -48,7 +48,7 @@ function Grid({task, setTask}) {
 
             setGridContent(rowsHtml);
         }
-        
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     },[task.taskStarted, task.taskId]);
 
     return (

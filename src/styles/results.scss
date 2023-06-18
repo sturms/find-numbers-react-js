@@ -1,4 +1,3 @@
-
 .endResultContainer {
     position:relative;
     margin:auto;
@@ -11,52 +10,42 @@
             font-size: 18px;
             text-align: center;
             margin-bottom: 0px;
-        }
-        
+        } 
         .good, .average, .bad {
             display: block;
         }
-
         .good {
             color: green;
             background-color: rgb(200, 243, 147);
         }
-
         .average {
             color: darkorange;
             background-color: lightgray;
         }
-        
         .bad {
             color: rgb(255, 108, 108);
             background-color: rgb(41, 41, 41);
         }
     }
-
-    .resultExplanation {
-        
+    .resultExplanation {  
         div {
             color: black;
             font-size: 16px;
             display: none;
             padding:10px;
         }
-
         .good, .average, .bad {
             display: block;
             background-color:wheat;
         }
-
         .good {
             color: darkgreen;
             border: 2px solid green;
         }
-
         .average {
             color:brown;
             border: 2px solid orange;
         }
-        
         .bad {
             color: darkred;
             border: 2px solid red;
