@@ -15,26 +15,35 @@ function GridRow({rowCells, task, setTask, gridProps}) {
             }));
 
             let gridSize = (Math.pow(task.gridSize, 2));
-            if (cell.orderNumber === gridSize - 1 || gridProps.misclicks > 10) {
-                gridProps.taskCompleted = true;
-                setTask(prevTaskStatus => {
-                    return { 
-                        ...prevTaskStatus,
-                        taskCompleted: true,
-                        startBtnClicked: false
-                    };
-                });
+            if (cell.orderNumber === gridSize - 1) {
+                endTask();
+                return;
             }
 
             gridProps.prevOrderNumber++;
         } else {
-            if (!gridProps.taskCompleted){
+            if (!gridProps.taskCompleted) {
                 gridProps.misclicks++;
                 setTask(prevTaskStatus => {
                     return {  ...prevTaskStatus, misclicks: gridProps.misclicks };
                 });
+
+                if (gridProps.misclicks > 10) {
+                    endTask();
+                }
             }
         }
+    }
+
+    const endTask = () => {
+        gridProps.taskCompleted = true;
+        setTask(prevTaskStatus => {
+            return { 
+                ...prevTaskStatus,
+                taskCompleted: true,
+                startBtnClicked: false
+            };
+        });
     }
     
     return (

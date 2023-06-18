@@ -6,7 +6,7 @@ import classNames from 'classnames';
 class GridProps {
     constructor() {
         this.prevOrderNumber = 0;
-        this.misclicks = 0;
+        this.misclicks = 1;
         this.maxNumber = 0;
         this.taskCompleted = false;
     }
