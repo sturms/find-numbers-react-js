@@ -1,7 +1,10 @@
 # find-numbers-react-js
 Find numbers as fast as you can and evaluate your concentration levels. Made to learn React.js basics.
 
-![image](https://github.com/sturms/find-numbers-react-js/assets/7896565/aa4291f8-2a4b-4452-ad75-0ad4b2756dc9)
+![image](https://github.com/sturms/find-numbers-react-js/assets/7896565/467a0b1b-e91e-4ba5-be2d-676e1965381f)
+
+
+
 
 Assignment 1: where you have to find numbers in ascending order:
 ![image](https://github.com/sturms/find-numbers-react-js/assets/7896565/5a148ede-0f10-4c8e-844e-5dac00f6b443)
