@@ -53,10 +53,12 @@ function Grid({task, setTask}) {
 
     return (
         <div className={classNames({
-                            gridContainer: true, 
-                            show: task.taskStarted,
-                            hide: !task.taskStarted
-                        })}>{gridContent}</div>
+                        gridContainer: true, 
+                        show: task.taskStarted,
+                        hide: !task.taskStarted
+                    })}>
+            {gridContent}
+        </div>
         );
 }
 

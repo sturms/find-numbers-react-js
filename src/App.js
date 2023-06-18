@@ -16,7 +16,7 @@ class Task {
         this.taskStarted = false;
         this.taskCompleted = false;
         this.pageLoaded = false;
-        this.gridSize = 3;
+        this.gridSize = 7;
         this.title = "Attention evaluation test, find numbers fast!";
         this.assignmentName = "";
         this.description = "";
@@ -66,7 +66,11 @@ function App() {
     }, [selectedTaskId]);
 
     return <div className={classNames({showOverlay: currentTask.taskStarted})}>
-        <TaskPanel task={currentTask} setTask={setTask} selectedTaskId={selectedTaskId} setSelectedTaskId={setSelectedTaskId} allTasks={tasks} />
+        <TaskPanel task={currentTask} 
+            setTask={setTask} 
+            selectedTaskId={selectedTaskId} 
+            setSelectedTaskId={setSelectedTaskId}
+            allTasks={tasks} />
         <Results task={currentTask} setTask={setTask} />
         <Grid task={currentTask} setTask={setTask} />
     </div>;

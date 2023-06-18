@@ -5,32 +5,41 @@ import './styles/grid.scss'
 function GridRow({rowCells, task, setTask, gridProps}) {
     const [cells, setCell] = useState(rowCells);
 
-    const mark = (cell) => {
+    const onCellItemClick = (cell) => {
         let isClickAllowed = isClickedItemCorrect(cell.orderNumber, gridProps.prevOrderNumber);
         if (!cell.clicked && isClickAllowed) {
-            setCell(cells.map(item => {
-                return item.id === cell.id
-                    ? { ...item, clicked: true } // Create new object to avoid state mutation bug
-                    : item;
-            }));
-
-            let gridSize = (Math.pow(task.gridSize, 2));
-            if (cell.orderNumber === gridSize - 1) {
-                endTask();
-                return;
-            }
-
-            gridProps.prevOrderNumber++;
+            handleCorrectItemClicked(cell);
         } else {
-            if (!gridProps.taskCompleted) {
-                gridProps.misclicks++;
-                setTask(prevTaskStatus => {
-                    return {  ...prevTaskStatus, misclicks: gridProps.misclicks };
-                });
+            handleWrongItemClicked();
+        }
+    }
 
-                if (gridProps.misclicks > 10) {
-                    endTask();
-                }
+    const handleCorrectItemClicked = (cell) => {
+        setCell(cells.map(item => {
+            return item.id === cell.id
+                ? { ...item, clicked: true }                    // Create new object to avoid state mutation
+                : item;
+        }));
+
+        let gridSize = (Math.pow(task.gridSize, 2));            // rows * columns
+        if (cell.orderNumber === getEvenNumber(gridSize)) {     // grid is generated so that its length is an even number
+            endTask();
+            return;
+        }
+
+        gridProps.prevOrderNumber++;
+    }
+
+    const handleWrongItemClicked = () => {
+        if (!gridProps.taskCompleted) {
+            gridProps.misclicks++;
+
+            setTask(prevTaskStatus => {
+                return {  ...prevTaskStatus, misclicks: gridProps.misclicks };
+            });
+
+            if (gridProps.misclicks > 10) {
+                endTask();
             }
         }
     }
@@ -51,7 +60,7 @@ function GridRow({rowCells, task, setTask, gridProps}) {
             <div className="row gridRow">
                 {cells.map((cell) => {
                     return <div key={cell.id}
-                    onClick={() => mark(cell)}
+                    onClick={() => onCellItemClick(cell)}
                     className={classNames({
                         gridCell: true,
                         boldFont: cell.boldFont,
@@ -66,6 +75,10 @@ function GridRow({rowCells, task, setTask, gridProps}) {
 
 function isClickedItemCorrect(orderNumber, prevOrderNumber) {
     return prevOrderNumber === orderNumber -1;
+}
+
+function getEvenNumber(number) {
+    return number % 2 === 0 ? number : number - 1;
 }
 
 export default memo(GridRow);

@@ -96,13 +96,22 @@ function Results({task, setTask}) {
                     && task.misclicks === 0
                         && task.timeSpent > task.averageTime
                     })}>
-                Unfortunatelly you didn't pass the assignment. Your time was {task.timeSpent} seconds.
+                Unfortunatelly you didn't pass the assignment. Your time was {task.timeSpent}.
                  However, you were accurate as you didn't have any misclicks. Keep on trying!
             </div>
-
             <div className={classNames({ 
                     bad: task.taskCompleted
-                    && task.misclicks === 0
+                        && task.misclicks > 0
+                        && task.misclicks <= 5
+                        && task.timeSpent > task.averageTime
+                    })}>
+                Unfortunatelly you didn't pass the assignment. Your time was {task.timeSpent} and misclicks {task.misclicks}.
+                 Keep on trying!
+            </div>
+            <div className={classNames({ 
+                    bad: task.taskCompleted
+                        && task.misclicks > 5
+                        && task.misclicks <= 10
                         && task.timeSpent > task.averageTime
                     })}>
                 Unfortunatelly you didn't pass the assignment. Your time was {task.timeSpent} seconds.
@@ -110,7 +119,7 @@ function Results({task, setTask}) {
             </div>
             <div className={classNames({ 
                     bad: task.taskCompleted
-                    && task.misclicks > 10
+                        && task.misclicks > 10
                         && task.timeSpent <= task.averageTime
                     })}>
                 Unfortunatelly you didn't pass the assignment. You exceeded the maximum allowed misclicks of 10!
