@@ -1,5 +1,7 @@
 body {
-    background-image: url('~/src/dist/img/bg.jpg');
+    background-image: url('~/src/dist/img/bg.png');
+    background-repeat:no-repeat;
+    background-size:cover;
 }
 .showOverlay {
     position: fixed; 
