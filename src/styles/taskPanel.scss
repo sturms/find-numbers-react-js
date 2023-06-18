@@ -32,6 +32,10 @@
     input.buttons:disabled{
         color:bisque;
     }
+
+    select {
+        margin-bottom: 5px;
+    }
 }
 
 .taskPanelContainer:hover {

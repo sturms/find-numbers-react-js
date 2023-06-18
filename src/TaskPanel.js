@@ -2,8 +2,8 @@ import './styles/taskPanel.scss'
 import { useEffect } from "react";
 import classNames from 'classnames';
 
-function TaskPanel({task, setTask}) {
-
+function TaskPanel({task, setTask, selectedTaskId, setSelectedTaskId, allTasks}) {
+    
     const start = () => {        
         setTask(prevTaskStatus => {
             return { 
@@ -12,7 +12,9 @@ function TaskPanel({task, setTask}) {
                 startBtnClicked: true,
                 timeSpent: 0,
                 misclicks: 0,
-                taskCompleted: false 
+                taskCompleted: false,
+                gridType: task.gridType,
+                taskId: selectedTaskId 
             }
         });
         
@@ -27,17 +29,18 @@ function TaskPanel({task, setTask}) {
         setTask(prevTaskStatus => {
             return { ...prevTaskStatus, taskStarted: false }
         });
-
         clearInterval(window.refreshIntervalId);
     }
 
     useEffect(() => {
-        // Check whether change event was not initiated by start button click
         if (!task.startBtnClicked) {
             stop();
-        }
-        
+        } 
     }, [task.taskCompleted]);
+
+    const handleTaskChange = (event) => {
+        setSelectedTaskId(Number(event.target.value));
+    };
 
     return <>
         <div className={classNames({taskPanelContainer: true, fadeOut: task.taskStarted })}>
@@ -68,7 +71,11 @@ function TaskPanel({task, setTask}) {
                     </div>
                 </div>
                 <div className='col-md-8'>
-                    <p><u>{task.assignmentName}:</u></p>
+                    <select value={selectedTaskId} onChange={handleTaskChange} disabled={task.taskStarted}>
+                        {allTasks.map((item) => { 
+                            return (<option key={item.taskId} value={item.taskId}>{item.assignmentName}</option>) 
+                        })}
+                    </select>
                     <p>{task.description}</p>
                 </div>
             </div>

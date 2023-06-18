@@ -36,7 +36,7 @@ function Grid({task, setTask}) {
             const gridItems = generateGridItems(gridSize, gridType, gridProps.maxNumber);
             let rowsHtml = [];
             for (let i = 0; i < gridSize; i++) {
-                let rowKey = i + '_row' + new Date().getMilliseconds();
+                let rowKey = i + '_row' + new Date().getMilliseconds() + task.taskId;
                 rowsHtml.push((<GridRow 
                         key={rowKey}
                         task={task}
@@ -49,7 +49,7 @@ function Grid({task, setTask}) {
             setGridContent(rowsHtml);
         }
         
-    },[task.taskStarted]);
+    },[task.taskStarted, task.taskId]);
 
     return (
         <div className={classNames({
