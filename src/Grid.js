@@ -1,6 +1,7 @@
+import './styles/grid.scss'
 import { useState, useEffect } from "react";
 import GridRow from './GridRow';
-import './styles/grid.scss'
+import classNames from 'classnames';
 
 class GridProps {
     constructor() {
@@ -51,7 +52,11 @@ function Grid({task, setTask}) {
     },[task.taskStarted]);
 
     return (
-        <div className="container gridContainer">{gridContent}</div>
+        <div className={classNames({
+                            gridContainer: true, 
+                            show: task.taskStarted,
+                            hide: !task.taskStarted
+                        })}>{gridContent}</div>
         );
 }
 

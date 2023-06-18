@@ -3,9 +3,17 @@
     margin-right: auto;
     margin-top: 5px;
     width: 700px;
-    background-color: beige;
-    padding: 10px;
-    
+
+    &.show {
+        background-color: beige;
+        padding: 10px;
+        display: block;        
+    }
+
+    &.hide {
+        display: none;
+    }
+
     .gridCell {
         font-size: 16px;
         padding-top: 10px;

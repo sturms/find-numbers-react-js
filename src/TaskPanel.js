@@ -1,5 +1,6 @@
 import './styles/taskPanel.scss'
 import { useEffect } from "react";
+import classNames from 'classnames';
 
 function TaskPanel({task, setTask}) {
 
@@ -39,7 +40,7 @@ function TaskPanel({task, setTask}) {
     }, [task.taskCompleted]);
 
     return <>
-        <div className='taskPanelContainer'>
+        <div className={classNames({taskPanelContainer: true, fadeOut: task.taskStarted })}>
             <div className='row'>
                 <div className='col-md-12'>
                     <h3 className='title'>{task.title}</h3>

@@ -6,8 +6,14 @@
     border: 1px solid black;
     background-color:burlywood;
 
+    &.fadeOut {
+        opacity: 0.8;
+    }
+
     .title {
         padding: 5px;
+        text-align: center;
+        color:rgb(62, 16, 62);
     }
 
     .status {
@@ -23,10 +29,11 @@
         }
     }
     
-    input.buttons:hover {
-        color: yellow;
-    }
     input.buttons:disabled{
-        color:gray;
+        color:bisque;
     }
+}
+
+.taskPanelContainer:hover {
+    opacity: 1;
 }

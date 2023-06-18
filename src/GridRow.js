@@ -15,7 +15,7 @@ function GridRow({rowCells, task, setTask, gridProps}) {
             }));
 
             let gridSize = (Math.pow(task.gridSize, 2));
-            if (cell.orderNumber === gridSize - 1) {
+            if (cell.orderNumber === gridSize - 1 || gridProps.misclicks > 10) {
                 gridProps.taskCompleted = true;
                 setTask(prevTaskStatus => {
                     return { 
